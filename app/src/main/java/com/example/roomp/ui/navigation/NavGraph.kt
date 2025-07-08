@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.roomp.ui.screens.CreateScreen
 import com.example.roomp.ui.screens.SplashScreen
+import com.example.roomp.ui.screens.ThemeScreen
 
 @Composable
 fun AppNavGraph(
