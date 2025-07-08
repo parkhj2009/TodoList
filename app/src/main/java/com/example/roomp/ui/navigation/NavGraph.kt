@@ -38,8 +38,8 @@ fun AppNavGraph(
             Screen.CreateScreen.route,
             arguments = listOf(navArgument("colorHex") { type = NavType.StringType})
             ) { backStackEntry ->
-            val colorHex = backStackEntry.arguments?.getString("colorHex") ?: "FF4F9F9C"
-            val color = Color(android.graphics.Color.parseColor("$colorHex"))
+            val colorHex = backStackEntry.arguments?.getString("colorHex") ?: "#FF4F9F9C"
+            val color = Color(android.graphics.Color.parseColor("#$colorHex"))
             CreateScreen(
                 navController = navController,
                 base = color

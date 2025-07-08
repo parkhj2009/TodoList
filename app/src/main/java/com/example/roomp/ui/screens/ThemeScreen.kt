@@ -1,5 +1,6 @@
 package com.example.roomp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -100,6 +101,7 @@ fun ThemeScreen(
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
                     val colorHex = base.value.toUInt().toString(16).padStart(8,'0')
+                    Log.d("ThemeScreen", "Received colorHex: $colorHex")
                     navController.navigate(Screen.CreateScreen.withColor(colorHex))
                 }
             ) {
