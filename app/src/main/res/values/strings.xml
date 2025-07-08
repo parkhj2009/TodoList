@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">roomp</string>
+    <string name="title_activity_test">test</string>
+    <string name="title_activity_room">Room</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+</resources>
