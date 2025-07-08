@@ -1,6 +1,7 @@
 package com.example.roomp.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ fun SplashScreen(
             TopAppBar(
                 title = { Text("Register/Sign in") },
                 colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF4F9F9C),
                     titleContentColor = Color.White
                 )
             )
@@ -49,6 +51,7 @@ fun SplashScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color(0xFF4F9F9C))
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
