@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Card(base: Color, onClick:(Color)->Unit){
+fun Card(base: Color, onClick: (Color) -> Unit) {
     Box(
         modifier = Modifier
             .padding(
@@ -23,7 +23,7 @@ fun Card(base: Color, onClick:(Color)->Unit){
             )
             .width(360.dp)
             .height(100.dp)
-            .clickable {onClick(base)}) {
+            .clickable { onClick(base) }) {
         // 흰 부분
         Box(
             modifier = Modifier
