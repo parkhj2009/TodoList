@@ -72,10 +72,14 @@ fun CreateScreen(
                 )
             }) { innerPadding ->
             Box(
-                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.0f))
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.0f))
             )
             Column(
-                modifier = Modifier.fillMaxSize().padding(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
                         top = innerPadding.calculateTopPadding()
                     ), horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Top
             ) {
@@ -94,16 +98,27 @@ fun CreateScreen(
                 )
                 Box(modifier = Modifier.clickable { showInput = true }) {
                     Box(
-                        modifier = Modifier.align(Alignment.TopCenter).padding(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(
                                 top = 20.dp
-                            ).width(360.dp).height(200.dp).shadow(
+                            )
+                            .width(360.dp)
+                            .height(200.dp)
+                            .shadow(
                                 elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true
-                            ).background(Color.White, shape = RoundedCornerShape(16.dp))
+                            )
+                            .background(Color.White, shape = RoundedCornerShape(16.dp))
                     )
                     Box(
-                        modifier = Modifier.align(Alignment.TopCenter).width(360.dp).padding(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .width(360.dp)
+                            .padding(
                                 top = 20.dp
-                            ).height(50.dp).background(
+                            )
+                            .height(50.dp)
+                            .background(
                                 base, shape = RoundedCornerShape(
                                     topStart = 10.dp,
                                     topEnd = 10.dp,
@@ -114,12 +129,18 @@ fun CreateScreen(
 
                     )
                     Box(
-                        modifier = Modifier.offset(y = 50.dp).align(Alignment.Center).width(340.dp)
-                            .height(1.dp).background(Color.Gray)
+                        modifier = Modifier
+                            .offset(y = 50.dp)
+                            .align(Alignment.Center)
+                            .width(340.dp)
+                            .height(1.dp)
+                            .background(Color.Gray)
                     )
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.padding(start = 56.dp, end = 65.dp).fillMaxWidth()
+                        modifier = Modifier
+                            .padding(start = 56.dp, end = 65.dp)
+                            .fillMaxWidth()
                             .offset(y = 90.dp),
                     ) {
                         Image(
@@ -136,7 +157,9 @@ fun CreateScreen(
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.width(300.dp).offset(x = 60.dp, y = 180.dp)
+                        modifier = Modifier
+                            .width(300.dp)
+                            .offset(x = 60.dp, y = 180.dp)
                     ) {
                         Text(
                             modifier = Modifier,

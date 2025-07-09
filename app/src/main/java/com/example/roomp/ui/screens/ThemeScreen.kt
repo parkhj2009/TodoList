@@ -100,7 +100,7 @@ fun ThemeScreen(
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                    val colorHex = base.value.toUInt().toString(16).padStart(8,'0')
+                    val colorHex = base.value.toUInt().toString(16).padStart(8, '0')
                     Log.d("ThemeScreen", "Received colorHex: $colorHex")
                     navController.navigate(Screen.CreateScreen.withColor(colorHex))
                 }

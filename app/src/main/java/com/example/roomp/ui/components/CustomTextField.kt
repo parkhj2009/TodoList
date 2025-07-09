@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 fun CustomTextField(
     onDismiss: () -> Unit,
     showDatePicker: () -> Unit,
-    onTaskEntered: (String)-> Unit
+    onTaskEntered: (String) -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -54,7 +54,7 @@ fun CustomTextField(
                 .padding(16.dp)
                 .clickable(
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource()})
+                    interactionSource = remember { MutableInteractionSource() })
                 {}
         ) {
             BasicTextField(
@@ -81,7 +81,7 @@ fun CustomTextField(
                         }
                         Icon(
                             modifier = Modifier
-                                .clickable{ showDatePicker()},
+                                .clickable { showDatePicker() },
                             imageVector = Icons.Default.Send,
                             contentDescription = "날짜 선택",
                             tint = Color.Gray

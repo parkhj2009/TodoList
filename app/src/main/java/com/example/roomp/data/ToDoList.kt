@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity( tableName = "todolist")
+@Entity(tableName = "todolist")
 data class ToDoEntity(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     val task: String,

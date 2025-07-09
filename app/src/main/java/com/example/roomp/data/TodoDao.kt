@@ -13,7 +13,6 @@ interface ToDoDao {
     @Insert
     suspend fun insert(todo: ToDoEntity)
 
-
     @Delete
     suspend fun delete(todo: ToDoEntity)
 
