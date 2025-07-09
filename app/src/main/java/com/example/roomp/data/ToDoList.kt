@@ -2,7 +2,6 @@ package com.example.roomp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 @Entity(tableName = "todolist")
 data class ToDoEntity(
