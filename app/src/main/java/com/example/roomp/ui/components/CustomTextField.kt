@@ -1,5 +1,6 @@
 package com.example.roomp.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Icon
@@ -27,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -64,6 +68,19 @@ fun CustomTextField(
                     .fillMaxWidth()
                     .padding(16.dp),
                 singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (text.isNotBlank()) {
+                            onTaskEntered(text)
+                            showDatePicker()
+                            Log.d("CustomTextField", "Sent with Enter: $text")
+                            text = ""
+                            focusManager.clearFocus()
+                            onDismiss()
+                        }
+                    }
+                ),
                 decorationBox = { innerTextField ->
                     Row(
                         modifier = Modifier
@@ -81,7 +98,11 @@ fun CustomTextField(
                         }
                         Icon(
                             modifier = Modifier
-                                .clickable { showDatePicker() },
+                                .clickable {
+                                    onTaskEntered(text)
+                                    showDatePicker()
+                                    Log.d("CustomTextField", "Sent: $text")
+                                },
                             imageVector = Icons.Default.Send,
                             contentDescription = "날짜 선택",
                             tint = Color.Gray

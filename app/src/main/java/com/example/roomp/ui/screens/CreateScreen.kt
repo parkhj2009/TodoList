@@ -1,5 +1,6 @@
 package com.example.roomp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -177,24 +179,22 @@ fun CreateScreen(
 
                     }
                 }
-                selectedTimeMills?.let {
-                    val hour = it.hour
-                    val minute = it.minute
-                    Text(
-                        text = "선택한 시간: %02d:%02d".format(hour, minute),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-                    )
+
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                ) {
+                    TaskListScreen(todoViewModel = todoViewModel)
                 }
-
-                selectedDateMillis?.let {
-                    Text(
-                        text = SimpleDateFormat("M월 d일", Locale.KOREAN).format(Date(it))
-                    )
-                } ?: "날짜 선택 안됨"
-
-                TaskListScreen(todoViewModel = todoViewModel)
+                Button(
+                    modifier = Modifier
+                        .padding(top = 50.dp)
+                        .padding(30.dp)
+                        .fillMaxWidth(),
+                    onClick = { todoViewModel.delAll() }
+                ){
+                    Text("전체 삭제")
+                }
 
             }
         }
@@ -204,7 +204,10 @@ fun CreateScreen(
         CustomTextField(
             onDismiss = { showInput = false },
             showDatePicker = { showDatePicker = true },
-            onTaskEntered = { task -> inputTask = task })
+            onTaskEntered = {
+                task -> inputTask = task
+                Log.d("entered","received: $task")
+            })
     }
 
     if (showDatePicker) {

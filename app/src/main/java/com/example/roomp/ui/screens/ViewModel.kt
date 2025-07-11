@@ -29,4 +29,10 @@ class TodoViewModel(private var dao: ToDoDao) : ViewModel() {
             dao.insert(ToDoEntity(task = task, month = month, day = day, hour = hour, min = min))
         }
     }
+
+    fun delAll(){
+        viewModelScope.launch {
+            dao.deleteAll()
+        }
+    }
 }
