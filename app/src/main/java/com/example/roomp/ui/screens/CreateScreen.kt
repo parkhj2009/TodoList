@@ -1,5 +1,6 @@
 package com.example.roomp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,12 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -39,11 +37,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.roomp.R
+import com.example.roomp.ui.components.CustomTextField
 import com.example.roomp.ui.components.DatePickerModal
 import com.example.roomp.ui.components.FullScreenTimePicker
+import com.example.roomp.ui.components.TaskListScreen
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -51,29 +53,25 @@ import java.util.Locale
 @Composable
 fun CreateScreen(
     base: Color,
-    navController: NavController
+    navController: NavController,
+    todoViewModel: TodoViewModel = viewModel()
 ) {
     var showInput by remember { mutableStateOf(false) }
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
     var showTimePicker by remember { mutableStateOf(false) }
     var selectedTimeMills by remember { mutableStateOf<TimePickerState?>(null) }
+    var inputTask by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
-            containerColor = Color.White,
-            topBar = {
+            containerColor = Color.White, topBar = {
                 TopAppBar(
-                    title = { Text("Menu Homepage") },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = base,
-                        titleContentColor = Color.White
+                    title = { Text("Menu Homepage") }, colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = base, titleContentColor = Color.White
                     )
                 )
-            }
-        ) { innerPadding ->
+            }) { innerPadding ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -84,23 +82,17 @@ fun CreateScreen(
                     .fillMaxSize()
                     .padding(
                         top = innerPadding.calculateTopPadding()
-                    ),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Top
+                    ), horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.Top
             ) {
                 val today = Date()
                 val formatter = SimpleDateFormat("EEE d MMMM yyyy", Locale.ENGLISH)
                 val formattedDate = formatter.format(today)
 
                 Text(
-                    modifier = Modifier
-                        .padding(10.dp),
-                    text = "Today",
-                    fontSize = 30.sp
+                    modifier = Modifier.padding(10.dp), text = "Today", fontSize = 30.sp
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(10.dp),
+                    modifier = Modifier.padding(10.dp),
                     text = "Best platform for creating to-do list",
                     fontSize = 15.sp,
                     color = Color.Gray
@@ -115,9 +107,7 @@ fun CreateScreen(
                             .width(360.dp)
                             .height(200.dp)
                             .shadow(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(16.dp),
-                                clip = true
+                                elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true
                             )
                             .background(Color.White, shape = RoundedCornerShape(16.dp))
                     )
@@ -157,8 +147,7 @@ fun CreateScreen(
                         Image(
                             painter = painterResource(id = R.drawable.plus),
                             contentDescription = "plus",
-                            Modifier
-                                .size(35.dp)
+                            Modifier.size(35.dp)
                         )
                         Text(
                             text = "Tap plus to creat a new task",
@@ -175,7 +164,7 @@ fun CreateScreen(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "Add your task",
+                            text = "Add your task ",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Light,
                             color = Color.Gray
@@ -187,87 +176,71 @@ fun CreateScreen(
                             fontWeight = FontWeight.Light,
                             color = Color.Gray
                         )
-                        selectedTimeMills?.let {
-                            val hour = it.hour
-                            val minute = it.minute
-                            Text(
-                                text = "선택한 시간: %02d:%02d".format(hour, minute),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Medium,
-                                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-                            )
-                        }
-                    }
 
-                }
-
-                // 텍스트 창
-                if (showInput) {
-                    TextField(
-                        value = title,
-                        onValueChange = { title = it },
-                        placeholder = { Text("eg : Meeting with client") },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // 설명 입력
-                    TextField(
-                        value = description,
-                        onValueChange = { description = it },
-                        placeholder = { Text("Description") },
-                        modifier = Modifier
-                            .fillMaxWidth(),
-
-                        )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {             // 전송 버튼
-                        IconButton(onClick = {
-                            showDatePicker = true
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_sent),
-                                contentDescription = "Send",
-                                tint = base
-                            )
-                        }
                     }
                 }
+
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                ) {
+                    TaskListScreen(todoViewModel = todoViewModel)
+                }
+                Button(
+                    modifier = Modifier
+                        .padding(top = 50.dp)
+                        .padding(30.dp)
+                        .fillMaxWidth(),
+                    onClick = { todoViewModel.delAll() }
+                ){
+                    Text("전체 삭제")
+                }
+
             }
         }
     }
+
+    if (showInput) {
+        CustomTextField(
+            onDismiss = { showInput = false },
+            showDatePicker = { showDatePicker = true },
+            onTaskEntered = {
+                task -> inputTask = task
+                Log.d("entered","received: $task")
+            })
+    }
+
     if (showDatePicker) {
-        DatePickerModal(
-            onDateSelected = {
-                selectedDateMillis = it
-                showTimePicker = true
-            },
-            onDismiss = {
-                showDatePicker = false
-            }
-        )
+        DatePickerModal(onDateSelected = {
+            selectedDateMillis = it
+            showTimePicker = true
+        }, onDismiss = {
+            showDatePicker = false
+        })
     }
 
     if (showTimePicker) {
-        FullScreenTimePicker(
-            onConfirm = {
-                selectedTimeMills = it
-                showTimePicker = false
-                showInput = false
-            },
-            onDismiss = {
-                showTimePicker = false
-                showDatePicker = true
-                showInput = false
-            }
-        )
-    }
+        FullScreenTimePicker(onConfirm = {
+            selectedTimeMills = it
+            showTimePicker = false
+            showInput = false
+            selectedDateMillis?.let { dateMills ->
+                val date = Date(dateMills)
+                val calendar = Calendar.getInstance().apply { time = date }
 
+                val month = calendar.get(Calendar.MONTH) + 1
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val hour = it.hour
+                val min = it.minute
+
+                if (inputTask.isNotBlank()) {
+                    todoViewModel.insertTodo(inputTask, month, day, hour, min)
+                }
+            }
+        }, onDismiss = {
+            showTimePicker = false
+            showDatePicker = true
+            showInput = false
+        })
+    }
 }

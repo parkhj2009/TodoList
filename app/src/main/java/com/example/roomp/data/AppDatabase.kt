@@ -5,25 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ToDoList::class], version = 1)
-abstract class Appdatabase: RoomDatabase() {
+@Database(entities = [ToDoEntity::class], version = 1)
+abstract class AppDatabase : RoomDatabase() {
     abstract fun tododao(): ToDoDao
 
     companion object {
-        private var instance: Appdatabase? = null
+        private var instance: AppDatabase? = null
 
         @Synchronized
-        fun getInstance(context: Context): Appdatabase? {
+        fun getInstance(context: Context): AppDatabase {
             if (instance == null) {
-                synchronized(Appdatabase::class){
+                synchronized(AppDatabase::class) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        Appdatabase::class.java,
-                        "App-database"
+                        AppDatabase::class.java,
+                        "App-Database"
                     ).build()
                 }
             }
-            return instance
+            return instance!!
         }
     }
 }
