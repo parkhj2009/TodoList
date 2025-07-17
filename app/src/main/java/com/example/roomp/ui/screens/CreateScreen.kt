@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -102,9 +102,10 @@ fun CreateScreen(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .padding(
-                                top = 20.dp
+                                horizontal = 40.dp,
+                                vertical = 10.dp
                             )
-                            .width(360.dp)
+                            .fillMaxWidth()
                             .height(200.dp)
                             .shadow(
                                 elevation = 8.dp, shape = RoundedCornerShape(16.dp), clip = true
@@ -114,9 +115,10 @@ fun CreateScreen(
                     Box(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
-                            .width(360.dp)
+                            .fillMaxWidth()
                             .padding(
-                                top = 20.dp
+                                horizontal = 40.dp,
+                                vertical = 10.dp
                             )
                             .height(50.dp)
                             .background(
@@ -129,60 +131,63 @@ fun CreateScreen(
                             )
 
                     )
-                    Box(
-                        modifier = Modifier
-                            .offset(y = 50.dp)
-                            .align(Alignment.Center)
-                            .width(340.dp)
-                            .height(1.dp)
-                            .background(Color.Gray)
-                    )
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier
-                            .padding(start = 56.dp, end = 65.dp)
-                            .fillMaxWidth()
-                            .offset(y = 90.dp),
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.plus),
-                            contentDescription = "plus",
-                            Modifier.size(35.dp)
-                        )
-                        Text(
-                            text = "Tap plus to creat a new task",
-                            textAlign = TextAlign.Center,
-                            fontSize = 23.sp,
-                        )
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .width(300.dp)
-                            .offset(x = 60.dp, y = 180.dp)
-                    ) {
-                        Text(
-                            modifier = Modifier,
-                            text = "Add your task ",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Light,
-                            color = Color.Gray
-                        )
-                        Text(
-                            modifier = Modifier,
-                            text = formattedDate,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Light,
-                            color = Color.Gray
+                    Column {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier
+                                .padding(top = 90.dp, start = 56.dp, end = 65.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.plus),
+                                contentDescription = "plus",
+                                Modifier.size(35.dp)
+                            )
+                            Text(
+                                text = "Tap plus to creat a new task",
+                                textAlign = TextAlign.Center,
+                                fontSize = 23.sp,
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 40.dp)
+                                .fillMaxWidth()
+                                .padding(top = 50.dp) // Row 아래에서 약간 띄움
+                                .height(1.dp)
+                                .background(Color.Gray)
                         )
 
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp),  // 위아래 여백 조정
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Add your task",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Light,
+                                color = Color.Gray
+                            )
+
+                            Spacer(modifier = Modifier.width(30.dp)) // 두 텍스트 사이 간격 조정
+
+                            Text(
+                                text = formattedDate,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Light,
+                                color = Color.Gray
+                            )
+                        }
                     }
                 }
-
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
                 ) {
                     TaskListScreen(todoViewModel = todoViewModel)
                 }
@@ -192,7 +197,7 @@ fun CreateScreen(
                         .padding(30.dp)
                         .fillMaxWidth(),
                     onClick = { todoViewModel.delAll() }
-                ){
+                ) {
                     Text("전체 삭제")
                 }
 
@@ -204,9 +209,9 @@ fun CreateScreen(
         CustomTextField(
             onDismiss = { showInput = false },
             showDatePicker = { showDatePicker = true },
-            onTaskEntered = {
-                task -> inputTask = task
-                Log.d("entered","received: $task")
+            onTaskEntered = { task ->
+                inputTask = task
+                Log.d("entered", "received: $task")
             })
     }
 

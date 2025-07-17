@@ -3,6 +3,7 @@ package com.example.roomp.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,17 +19,18 @@ import androidx.compose.ui.unit.dp
 fun Card(base: Color, onClick: (Color) -> Unit) {
     Box(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(
                 top = 20.dp
             )
-            .width(360.dp)
             .height(100.dp)
             .clickable { onClick(base) }) {
         // 흰 부분
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .width(360.dp)
+                .padding(horizontal = 25.dp)
+                .fillMaxWidth()
                 .height(100.dp)
                 .shadow(
                     elevation = 8.dp,
@@ -42,7 +44,8 @@ fun Card(base: Color, onClick: (Color) -> Unit) {
         Box(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .width(360.dp)
+                .padding(horizontal = 25.dp)
+                .fillMaxWidth()
                 .height(30.dp)
                 .background(
                     base, shape = RoundedCornerShape(
