@@ -40,14 +40,11 @@ fun SplashScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Register/Sign in") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF4F9F9C),
-                    titleContentColor = Color.White
+                title = { Text("Register/Sign in") }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF4F9F9C), titleContentColor = Color.White
                 )
             )
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()

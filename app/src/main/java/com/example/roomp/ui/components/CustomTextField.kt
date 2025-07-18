@@ -35,9 +35,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomTextField(
-    onDismiss: () -> Unit,
-    showDatePicker: () -> Unit,
-    onTaskEntered: (String) -> Unit
+    onDismiss: () -> Unit, showDatePicker: () -> Unit, onTaskEntered: (String) -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -51,16 +49,13 @@ fun CustomTextField(
                     focusManager.clearFocus()
                     onDismiss()
                 })
-            }
-    ) {
+            }) {
         Box(
             modifier = Modifier
                 .padding(16.dp)
                 .clickable(
                     indication = null,
-                    interactionSource = remember { MutableInteractionSource() })
-                {}
-        ) {
+                    interactionSource = remember { MutableInteractionSource() }) {}) {
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
@@ -79,12 +74,13 @@ fun CustomTextField(
                             focusManager.clearFocus()
                             onDismiss()
                         }
-                    }
-                ),
+                    }),
                 decorationBox = { innerTextField ->
                     Row(
                         modifier = Modifier
-                            .background(Color.White, shape = RoundedCornerShape(16.dp))
+                            .background(
+                                Color.White, shape = RoundedCornerShape(16.dp)
+                            )
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -97,19 +93,17 @@ fun CustomTextField(
                             innerTextField()
                         }
                         Icon(
-                            modifier = Modifier
-                                .clickable {
-                                    onTaskEntered(text)
-                                    showDatePicker()
-                                    Log.d("CustomTextField", "Sent: $text")
-                                },
+                            modifier = Modifier.clickable {
+                                onTaskEntered(text)
+                                showDatePicker()
+                                Log.d("CustomTextField", "Sent: $text")
+                            },
                             imageVector = Icons.Default.Send,
                             contentDescription = "날짜 선택",
                             tint = Color.Gray
                         )
                     }
-                }
-            )
+                })
         }
     }
 }

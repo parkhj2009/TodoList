@@ -17,13 +17,10 @@ import com.example.roomp.ui.screens.TodoViewModelFactory
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController,
-    baseColor: Color,
-    onBaseColorChange: (Color) -> Unit
+    navController: NavHostController, baseColor: Color, onBaseColorChange: (Color) -> Unit
 ) {
     NavHost(
-        navController = navController,
-        startDestination = Screen.SplashScreen.route
+        navController = navController, startDestination = Screen.SplashScreen.route
     ) {
         composable(Screen.SplashScreen.route) {
             SplashScreen(
@@ -46,9 +43,7 @@ fun AppNavGraph(
             )
 
             CreateScreen(
-                navController = navController,
-                base = baseColor,
-                todoViewModel = todoViewModel
+                navController = navController, base = baseColor, todoViewModel = todoViewModel
             )
         }
     }

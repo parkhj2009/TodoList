@@ -21,8 +21,7 @@ class MainActivity : ComponentActivity() {
             AppNavGraph(
                 navController = navController,
                 baseColor = baseColor,
-                onBaseColorChange = { newColor -> baseColor = newColor }
-            )
+                onBaseColorChange = { newColor -> baseColor = newColor })
         }
     }
 }

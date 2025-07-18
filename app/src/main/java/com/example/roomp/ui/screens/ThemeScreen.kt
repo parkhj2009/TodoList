@@ -28,22 +28,16 @@ import com.example.roomp.ui.navigation.Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ThemeScreen(
-    navController: NavController,
-    base: Color,
-    onBaseColorChange: (Color) -> Unit
+    navController: NavController, base: Color, onBaseColorChange: (Color) -> Unit
 ) {
     Scaffold(
-        containerColor = Color.White,
-        topBar = {
+        containerColor = Color.White, topBar = {
             TopAppBar(
-                title = { Text("Menu Homepage") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = base,
-                    titleContentColor = Color.White
+                title = { Text("Menu Homepage") }, colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = base, titleContentColor = Color.White
                 )
             )
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -103,8 +97,7 @@ fun ThemeScreen(
                     val colorHex = base.value.toUInt().toString(16).padStart(8, '0')
                     Log.d("ThemeScreen", "Received colorHex: $colorHex")
                     navController.navigate(Screen.CreateScreen.withColor(colorHex))
-                }
-            ) {
+                }) {
                 Text("Open Todyapp")
             }
         }

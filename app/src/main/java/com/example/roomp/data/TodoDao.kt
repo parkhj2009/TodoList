@@ -1,7 +1,6 @@
 package com.example.roomp.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +9,6 @@ import kotlinx.coroutines.flow.Flow
 interface ToDoDao {
     @Insert
     suspend fun insert(todo: ToDoEntity)
-
-    @Delete
-    suspend fun delete(todo: ToDoEntity)
 
     @Query("SELECT * FROM todolist")
     fun getAll(): Flow<List<ToDoEntity>>

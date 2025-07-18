@@ -30,7 +30,7 @@ class TodoViewModel(private var dao: ToDoDao) : ViewModel() {
         }
     }
 
-    fun delAll(){
+    fun delAll() {
         viewModelScope.launch {
             dao.deleteAll()
         }

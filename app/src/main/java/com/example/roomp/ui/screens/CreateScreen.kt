@@ -52,9 +52,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateScreen(
-    base: Color,
-    navController: NavController,
-    todoViewModel: TodoViewModel = viewModel()
+    base: Color, navController: NavController, todoViewModel: TodoViewModel = viewModel()
 ) {
     var showInput by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
@@ -102,8 +100,7 @@ fun CreateScreen(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .padding(
-                                horizontal = 40.dp,
-                                vertical = 10.dp
+                                horizontal = 40.dp, vertical = 10.dp
                             )
                             .fillMaxWidth()
                             .height(200.dp)
@@ -117,8 +114,7 @@ fun CreateScreen(
                             .align(Alignment.TopCenter)
                             .fillMaxWidth()
                             .padding(
-                                horizontal = 40.dp,
-                                vertical = 10.dp
+                                horizontal = 40.dp, vertical = 10.dp
                             )
                             .height(50.dp)
                             .background(
@@ -196,8 +192,7 @@ fun CreateScreen(
                         .padding(top = 50.dp)
                         .padding(30.dp)
                         .fillMaxWidth(),
-                    onClick = { todoViewModel.delAll() }
-                ) {
+                    onClick = { todoViewModel.delAll() }) {
                     Text("전체 삭제")
                 }
 
