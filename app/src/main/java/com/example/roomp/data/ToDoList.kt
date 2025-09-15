@@ -7,8 +7,12 @@ import androidx.room.PrimaryKey
 data class ToDoEntity(
     @PrimaryKey(autoGenerate = true) var id: Int = 0,
     val task: String,
+    val description: String,
     val month: Int,
     val day: Int,
     val hour: Int,
     val min: Int
 )
+
+
+

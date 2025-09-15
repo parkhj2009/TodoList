@@ -42,6 +42,9 @@ android {
 }
 
 dependencies {
+
+
+    implementation(libs.androidx.navigation.compose.v293)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

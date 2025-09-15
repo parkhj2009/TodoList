@@ -1,6 +1,6 @@
-package com.example.roomp.ui.screens
+package com.example.roomp.screens.theme
 
-import android.util.Log
+import ThemeViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,12 +9,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,19 +24,12 @@ import androidx.navigation.NavController
 import com.example.roomp.ui.components.Card
 import com.example.roomp.ui.navigation.Screen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ThemeScreen(
-    navController: NavController, base: Color, onBaseColorChange: (Color) -> Unit
+    navController: NavController, themeViewModel: ThemeViewModel,onBaseColorChange: (Color) -> Unit
 ) {
-    Scaffold(
-        containerColor = Color.White, topBar = {
-            TopAppBar(
-                title = { Text("Menu Homepage") }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = base, titleContentColor = Color.White
-                )
-            )
-        }) { innerPadding ->
+    val base by themeViewModel.baseColor.collectAsState()
+    Scaffold(contentColor = Color.White) { innerPadding ->
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -67,20 +59,13 @@ fun ThemeScreen(
             )
 
             //테마 선택
-            Card(Color(0xFF4F9F9C)) {
-                onBaseColorChange(it)
-            }
-
-            Card(Color(0xFF1b1c1f)) {
-                onBaseColorChange(it)
-            }
-
-            Card(Color(0xFFd85040)) {
-                onBaseColorChange(it)
-            }
-
-            Card(Color(0xFF3875ea)) {
-                onBaseColorChange(it)
+            listOf(
+                Color(0xFF4F9F9C),
+                Color(0xFF1b1c1f),
+                Color(0xFFd85040),
+                Color(0xFF3875ea)
+            ).forEach { color ->
+                Card(color) { themeViewModel.saveTheme(color)}
             }
 
             Button(
@@ -94,9 +79,7 @@ fun ThemeScreen(
                 ),
                 shape = RoundedCornerShape(10.dp),
                 onClick = {
-                    val colorHex = base.value.toUInt().toString(16).padStart(8, '0')
-                    Log.d("ThemeScreen", "Received colorHex: $colorHex")
-                    navController.navigate(Screen.CreateScreen.withColor(colorHex))
+                    navController.navigate(Screen.CreateScreen.route)
                 }) {
                 Text("Open Todyapp")
             }

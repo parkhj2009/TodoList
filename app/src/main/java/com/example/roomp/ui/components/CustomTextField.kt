@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +36,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomTextField(
-    onDismiss: () -> Unit, showDatePicker: () -> Unit, onTaskEntered: (String) -> Unit
+    onDismiss: () -> Unit,
+    showDatePicker: () -> Unit,
+    onTaskEntered: (String) -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -49,19 +52,20 @@ fun CustomTextField(
                     focusManager.clearFocus()
                     onDismiss()
                 })
-            }) {
-        Box(
+            }
+    ) {
+        // Bottom에 TextField 고정
+        Row(
             modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
                 .padding(16.dp)
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }) {}) {
+                .imePadding(), // 키보드 높이에 맞춰 위로 올라감
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             BasicTextField(
                 value = text,
                 onValueChange = { text = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
@@ -69,41 +73,42 @@ fun CustomTextField(
                         if (text.isNotBlank()) {
                             onTaskEntered(text)
                             showDatePicker()
-                            Log.d("CustomTextField", "Sent with Enter: $text")
                             text = ""
                             focusManager.clearFocus()
                             onDismiss()
                         }
-                    }),
+                    }
+                ),
                 decorationBox = { innerTextField ->
                     Row(
                         modifier = Modifier
-                            .background(
-                                Color.White, shape = RoundedCornerShape(16.dp)
-                            )
+                            .background(Color.White, shape = RoundedCornerShape(8.dp))
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Box(modifier = Modifier.weight(1f)) {
-                            if (text.isEmpty()) {
-                                Text("일정을 입력하세요", color = Color.Gray)
-                            }
-                            innerTextField()
+                        if (text.isEmpty()) {
+                            Text("일정을 입력하세요", color = Color.Gray)
                         }
+                        innerTextField()
+                        Spacer(modifier = Modifier.weight(1f))
                         Icon(
-                            modifier = Modifier.clickable {
-                                onTaskEntered(text)
-                                showDatePicker()
-                                Log.d("CustomTextField", "Sent: $text")
-                            },
                             imageVector = Icons.Default.Send,
-                            contentDescription = "날짜 선택",
-                            tint = Color.Gray
+                            contentDescription = "Send",
+                            tint = Color.Gray,
+                            modifier = Modifier.clickable {
+                                if (text.isNotBlank()) {
+                                    onTaskEntered(text)
+                                    showDatePicker()
+                                    text = ""
+                                    focusManager.clearFocus()
+                                    onDismiss()
+                                }
+                            }
                         )
                     }
-                })
+                }
+            )
         }
     }
 }

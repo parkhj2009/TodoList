@@ -1,5 +1,6 @@
-package com.example.roomp.ui.screens
+package com.example.roomp.screens.splash
 
+import ThemeViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,31 +27,46 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.roomp.R
+import com.example.roomp.data.AppDatabase
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SplashScreen(
-    navController: NavController
+    navController: NavController,
+    appDatabase: AppDatabase,
+    themeViewModel: ThemeViewModel
 ) {
+    val base by themeViewModel.baseColor.collectAsState()
     LaunchedEffect(key1 = true) {
         delay(2000)
-        navController.navigate("theme") {
-            popUpTo("splash") { inclusive = true }
+
+        val theme = appDatabase.themedao().getTheme()
+
+        if (theme != null) {
+            // 테마가 있으면 바로 CreateScreen
+            navController.navigate("create") {
+                popUpTo("splash") { inclusive = true }
+            }
+        } else {
+            // 테마가 없으면 ThemeScreen
+            navController.navigate("theme") {
+                popUpTo("splash") { inclusive = true }
+            }
         }
     }
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Register/Sign in") }, colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF4F9F9C), titleContentColor = Color.White
+                    containerColor = base, titleContentColor = Color.White
                 )
             )
         }) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF4F9F9C))
+                .background(base)
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {

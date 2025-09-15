@@ -1,4 +1,4 @@
-package com.example.roomp.ui.screens
+package com.example.roomp.screens.create
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class TodoViewModel(private var dao: ToDoDao) : ViewModel() {
+class CreateViewModel(private var dao: ToDoDao) : ViewModel() {
 
     private var _tasks = MutableStateFlow<List<ToDoEntity>>(emptyList())
     val tasks: StateFlow<List<ToDoEntity>> = _tasks
+
 
     init {
         viewModelScope.launch {
@@ -23,10 +24,10 @@ class TodoViewModel(private var dao: ToDoDao) : ViewModel() {
         }
     }
 
-    fun insertTodo(task: String, month: Int, day: Int, hour: Int, min: Int) {
+    fun insertTodo(task: String, des:String ,month: Int, day: Int, hour: Int, min: Int) {
         viewModelScope.launch {
             Log.d("TodoViewModel", "Inserting task: $task at $month/$day $hour:$min")
-            dao.insert(ToDoEntity(task = task, month = month, day = day, hour = hour, min = min))
+            dao.insert(ToDoEntity(task = task, description = des, month = month, day = day, hour = hour, min = min))
         }
     }
 

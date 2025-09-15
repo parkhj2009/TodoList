@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.roomp.ui.screens.TodoViewModel
+import androidx.compose.ui.util.fastForEach
+import com.example.roomp.screens.create.CreateViewModel
 
 @Composable
-fun TaskListScreen(todoViewModel: TodoViewModel) {
+fun TaskListScreen(todoViewModel: CreateViewModel) {
     val taskList by todoViewModel.tasks.collectAsState()
 
     Column {
@@ -22,7 +23,7 @@ fun TaskListScreen(todoViewModel: TodoViewModel) {
         if (taskList.isEmpty()) {
             Text("저장된 할 일이 없습니다.", modifier = Modifier.padding(16.dp))
         } else {
-            taskList.forEach { task ->
+            taskList.fastForEach { task ->
                 Text(
                     text = "${task.task} - ${task.month}월 ${task.day}일 ${task.hour}시 ${task.min}분",
                     modifier = Modifier.padding(8.dp)
