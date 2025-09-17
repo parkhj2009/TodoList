@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -201,11 +202,22 @@ fun CreateScreen(
                             contentAlignment = Alignment.BottomCenter,
                             modifier = Modifier
                                 .padding(horizontal = 30.dp)
-                                .fillMaxWidth()
-                                .height(30.dp)
-                                .clickable(onClick = {todoViewModel.delAll()})
+                                .fillMaxSize()
+                                .clickable(onClick = { todoViewModel.delAll() })
                         ){
-                            Text("전체삭제")
+                            TextButton(
+                                modifier = Modifier.background(base, RoundedCornerShape(16.dp)),
+                                onClick = { todoViewModel.delAll() }
+                            ) {
+                                Text(
+                                    textAlign = TextAlign.Center,
+                                    text = "전체 삭제",
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(30.dp)
+                                )
+                            }
                         }
                     }
 
