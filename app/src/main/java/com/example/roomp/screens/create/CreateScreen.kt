@@ -2,8 +2,6 @@ package com.example.roomp.screens.create
 
 import ThemeViewModel
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -46,12 +42,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.roomp.ui.components.CustomTextField
 import com.example.roomp.ui.components.DatePickerModal
-import com.example.roomp.ui.components.FullScreenTimePicker
-import com.example.roomp.ui.components.TaskListScreen
+import com.example.roomp.ui.components.TimePicker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -65,15 +61,15 @@ fun CreateScreen(
     todoViewModel: CreateViewModel = viewModel()
 ) {
     val base by themeViewModel.baseColor.collectAsState()
-    val sheetState = rememberModalBottomSheetState()
     var showInput by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
     var showTimePicker by remember { mutableStateOf(false) }
     var selectedTimeMills by remember { mutableStateOf<TimePickerState?>(null) }
     var inputTask by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
+    var inputDs by remember { mutableStateOf("") }
+
+
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
             containerColor = Color.White, bottomBar = {
@@ -199,7 +195,20 @@ fun CreateScreen(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    TaskListScreen(todoViewModel = todoViewModel)
+                    Column {
+                        TaskList(todoViewModel = todoViewModel)
+                        Box(
+                            contentAlignment = Alignment.BottomCenter,
+                            modifier = Modifier
+                                .padding(horizontal = 30.dp)
+                                .fillMaxWidth()
+                                .height(30.dp)
+                                .clickable(onClick = {todoViewModel.delAll()})
+                        ){
+                            Text("전체삭제")
+                        }
+                    }
+
                 }
             }
         }
@@ -209,9 +218,10 @@ fun CreateScreen(
         CustomTextField(
             onDismiss = { showInput = false },
             showDatePicker = { showDatePicker = true },
-            onTaskEntered = { task ->
+            onTaskEntered = { task, description ->
                 inputTask = task
-                Log.d("entered", "received: $task")
+                inputDs = description
+                Log.d("entered", "received: $task $description")
             })
     }
 
@@ -219,7 +229,6 @@ fun CreateScreen(
         ModalBottomSheet(
             containerColor = Color.White,
             onDismissRequest = {
-                showInput = false
                 showDatePicker = false
             },
             sheetState = rememberModalBottomSheetState(
@@ -232,10 +241,10 @@ fun CreateScreen(
                     .wrapContentHeight()
             ) {
                 DatePickerModal(
+                    themeViewModel = themeViewModel,
                     onDateSelected = {
                         selectedDateMillis = it
                         showTimePicker = true
-                        showDatePicker = false
                     },
                     onDismiss = {
                         showDatePicker = false
@@ -246,27 +255,34 @@ fun CreateScreen(
     }
 
     if (showTimePicker) {
-        FullScreenTimePicker(onConfirm = {
-            selectedTimeMills = it
-            showTimePicker = false
-            showInput = false
-            selectedDateMillis?.let { dateMills ->
-                val date = Date(dateMills)
-                val calendar = Calendar.getInstance().apply { time = date }
+        Dialog(onDismissRequest = { showTimePicker = false }) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                TimePicker(
+                    themeViewModel = themeViewModel,
+                    onConfirm = {
+                        selectedTimeMills = it
+                        showTimePicker = false
+                        showDatePicker = false
+                        showInput = false
+                        selectedDateMillis?.let { dateMills ->
+                            val date = Date(dateMills)
+                            val calendar = Calendar.getInstance().apply { time = date }
 
-                val month = calendar.get(Calendar.MONTH) + 1
-                val day = calendar.get(Calendar.DAY_OF_MONTH)
-                val hour = it.hour
-                val min = it.minute
+                            val month = calendar.get(Calendar.MONTH) + 1
+                            val day = calendar.get(Calendar.DAY_OF_MONTH)
+                            val hour = it.hour
+                            val min = it.minute
 
-                if (inputTask.isNotBlank()) {
-                    todoViewModel.insertTodo(inputTask, description, month, day, hour, min)
-                }
+                            if (inputTask.isNotBlank()) {
+                                todoViewModel.insertTodo(inputTask, inputDs, month, day, hour, min)
+                            }
+                        }
+                    }, onDismiss = {
+                        showTimePicker = false
+                    })
             }
-        }, onDismiss = {
-            showTimePicker = false
-            showDatePicker = true
-            showInput = false
-        })
+        }
     }
 }
